@@ -18,6 +18,21 @@ docker compose up --build
 
 L'API est disponible sur [http://localhost:8000](http://localhost:8000).
 
+## Page d'accueil en ligne (GitHub Pages)
+
+La landing page est déployée automatiquement à chaque push sur `main` :
+
+**[https://clems023.github.io/task-api/](https://clems023.github.io/task-api/)**
+
+> GitHub Pages ne peut héberger que du HTML/CSS/JS statique — l'API Django reste à lancer en local via Docker. La démo « Appeler /api/health/ » sur le site GitHub affiche les instructions pour démarrer l'API.
+
+Regénérer le site statique localement :
+
+```bash
+python scripts/build_pages.py
+# fichiers générés dans docs/
+```
+
 ## Authentification (JWT)
 
 Les endpoints `/api/tasks/` nécessitent un token Bearer.
@@ -67,14 +82,10 @@ curl -X POST http://localhost:8000/api/auth/token/refresh/ \
 
 ## Tests & qualité
 
-```bash
-# Tests
-docker compose run web python manage.py test
+La suite couvre **tous les endpoints** (page d'accueil, health, auth JWT, CRUD tasks + cas 401/404).
 
-# Lint local (optionnel)
-pip install -r requirements-dev.txt
-ruff check .
-ruff format --check .
+```bash
+docker compose run web python manage.py test --verbosity=2
 ```
 
 ## CI
@@ -82,8 +93,8 @@ ruff format --check .
 Chaque push/PR sur `main` déclenche :
 
 - **Lint** — Ruff (style + format)
-- **Tests** — suite Django
-- **Docker** — build de l'image + tests en conteneur
+- **Tests** — suite complète Django (`python manage.py test`)
+- **Docker** — build de l'image + re-exécution des tests en conteneur
 
 ## Structure du projet
 

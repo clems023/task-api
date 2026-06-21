@@ -81,12 +81,24 @@
 
   if (demoBtn && demoOutput) {
     demoBtn.addEventListener("click", async () => {
+      const apiHealth = document.body.dataset.apiHealth;
+
+      if (!apiHealth) {
+        demoOutput.className = "demo-output";
+        demoOutput.textContent =
+          "L'API n'est pas hébergée sur GitHub Pages.\n\n" +
+          "Clonez le repo et lancez :\n" +
+          "  docker compose up --build\n\n" +
+          "Puis testez : http://localhost:8000/api/health/";
+        return;
+      }
+
       demoBtn.disabled = true;
       demoOutput.className = "demo-output loading";
       demoOutput.textContent = "GET /api/health/ …";
 
       try {
-        const res = await fetch("/api/health/");
+        const res = await fetch(apiHealth);
         const data = await res.json();
         demoOutput.className = "demo-output";
         demoOutput.textContent = JSON.stringify(data, null, 2);
