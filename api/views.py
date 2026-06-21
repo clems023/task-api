@@ -1,3 +1,4 @@
+from django.views.generic import TemplateView
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -5,6 +6,10 @@ from rest_framework.viewsets import ModelViewSet
 
 from .models import Task
 from .serializers import TaskSerializer
+
+
+class HomeView(TemplateView):
+    template_name = "home/index.html"
 
 
 class HealthView(APIView):

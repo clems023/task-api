@@ -1,0 +1,164 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task API — Gestion de tâches REST</title>
+  <meta name="description" content="API REST Django pour gérer vos tâches. Docker, DRF, endpoints CRUD.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'home/styles.css' %}">
+</head>
+<body>
+  <canvas id="particles" aria-hidden="true"></canvas>
+  <div class="glow glow-1" aria-hidden="true"></div>
+  <div class="glow glow-2" aria-hidden="true"></div>
+  <div class="glow glow-3" aria-hidden="true"></div>
+
+  <div class="page">
+    <nav>
+      <div class="logo">
+        <div class="logo-icon">⚡</div>
+        Task API
+      </div>
+      <ul class="nav-links">
+        <li><a href="#features">Fonctionnalités</a></li>
+        <li><a href="#endpoints">Endpoints</a></li>
+        <li><a href="#start">Démarrage</a></li>
+      </ul>
+    </nav>
+
+    <header class="hero">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        API en ligne · Django REST Framework
+      </div>
+      <h1>
+        Vos tâches,<br>
+        <span class="gradient-text">en une requête.</span>
+      </h1>
+      <p>
+        Une API REST minimaliste et prête pour la prod.
+        Créez, listez, modifiez et supprimez des tâches via des endpoints JSON propres — le tout conteneurisé avec Docker.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="/api/health/">Tester le health check →</a>
+        <a class="btn btn-ghost" href="https://github.com/clems023/task-api" target="_blank" rel="noopener">Voir sur GitHub</a>
+      </div>
+    </header>
+
+    <section id="features" class="reveal">
+      <p class="section-label">Pourquoi Task API</p>
+      <h2>Tout ce qu'il faut, rien de superflu</h2>
+      <div class="cards">
+        <article class="card">
+          <div class="card-icon">🚀</div>
+          <h3>Démarrage instantané</h3>
+          <p>Un seul <code>docker compose up</code> et l'API tourne sur le port 8000 avec migrations automatiques.</p>
+        </article>
+        <article class="card">
+          <div class="card-icon">📦</div>
+          <h3>CRUD complet</h3>
+          <p>Créez, lisez, mettez à jour et supprimez des tâches avec une pagination intégrée (20 items/page).</p>
+        </article>
+        <article class="card">
+          <div class="card-icon">🔌</div>
+          <h3>Prête à brancher</h3>
+          <p>JSON pur, CORS configuré, sans auth en v1 — idéale pour un frontend ou une app mobile.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="endpoints" class="reveal">
+      <p class="section-label">Référence</p>
+      <h2>Endpoints disponibles</h2>
+      <div class="endpoints">
+        <div class="endpoint">
+          <span class="method method-get">GET</span>
+          <span class="route">/api/health/</span>
+          <span class="endpoint-desc">Vérifier que l'API répond</span>
+        </div>
+        <div class="endpoint">
+          <span class="method method-get">GET</span>
+          <span class="route">/api/tasks/</span>
+          <span class="endpoint-desc">Lister les tâches (paginé)</span>
+        </div>
+        <div class="endpoint">
+          <span class="method method-post">POST</span>
+          <span class="route">/api/tasks/</span>
+          <span class="endpoint-desc">Créer une tâche</span>
+        </div>
+        <div class="endpoint">
+          <span class="method method-get">GET</span>
+          <span class="route">/api/tasks/{id}/</span>
+          <span class="endpoint-desc">Détail d'une tâche</span>
+        </div>
+        <div class="endpoint">
+          <span class="method method-patch">PATCH</span>
+          <span class="route">/api/tasks/{id}/</span>
+          <span class="endpoint-desc">Mise à jour partielle</span>
+        </div>
+        <div class="endpoint">
+          <span class="method method-delete">DELETE</span>
+          <span class="route">/api/tasks/{id}/</span>
+          <span class="endpoint-desc">Supprimer une tâche</span>
+        </div>
+      </div>
+
+      <div class="demo">
+        <div class="demo-header">
+          <h3>Essayer en direct</h3>
+          <button class="demo-btn" id="demo-btn" type="button">Appeler /api/health/</button>
+        </div>
+        <div class="demo-output" id="demo-output">Cliquez pour interroger l'API depuis cette page.</div>
+      </div>
+    </section>
+
+    <section id="start" class="reveal">
+      <p class="section-label">Quick start</p>
+      <h2>Lancer en 30 secondes</h2>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          terminal
+        </div>
+        <pre><span class="token-cmd">git clone</span> https://github.com/clems023/task-api.git
+<span class="token-cmd">cd</span> task-api
+<span class="token-cmd">cp</span> .env.example .env
+<span class="token-cmd">docker compose up</span> <span class="token-flag">--build</span></pre>
+      </div>
+
+      <div class="code-block" style="margin-top: 1rem;">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          curl — créer une tâche
+        </div>
+        <pre><span class="token-cmd">curl</span> <span class="token-flag">-X POST</span> <span class="token-url">http://localhost:8000/api/tasks/</span> \
+  <span class="token-flag">-H</span> <span class="token-str">"Content-Type: application/json"</span> \
+  <span class="token-flag">-d</span> <span class="token-str">'{"title": "Ma première tâche"}'</span></pre>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <p class="section-label">Stack</p>
+      <h2>Technologies</h2>
+      <div class="stack">
+        <span class="stack-pill">Python 3.12</span>
+        <span class="stack-pill">Django 5</span>
+        <span class="stack-pill">Django REST Framework</span>
+        <span class="stack-pill">SQLite</span>
+        <span class="stack-pill">Gunicorn</span>
+        <span class="stack-pill">Docker</span>
+      </div>
+    </section>
+
+    <footer>
+      <p>Task API · <a href="https://github.com/clems023/task-api" target="_blank" rel="noopener">clems023/task-api</a></p>
+    </footer>
+  </div>
+
+  <script src="{% static 'home/app.js' %}"></script>
+</body>
+</html>

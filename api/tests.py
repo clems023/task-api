@@ -1,5 +1,12 @@
-from django.test import TestCase
+from django.test import Client, TestCase
 from rest_framework.test import APIClient
+
+
+class HomeTests(TestCase):
+    def test_homepage_returns_200(self):
+        response = Client().get("/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Task API")
 
 
 class HealthTests(TestCase):
