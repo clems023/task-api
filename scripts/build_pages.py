@@ -18,7 +18,10 @@ html = html.replace(
     'Tester le health check →',
     "Voir le quick start →",
 )
-html = html.replace("<body>", '<body data-api-health="">')
+html = html.replace('data-api-health="/api/health/"', 'data-api-health=""')
+
+if 'data-api-health="/api/health/"' in html:
+    raise SystemExit("Échec : data-api-health n'a pas été vidé pour GitHub Pages.")
 
 STATIC_OUT.mkdir(parents=True, exist_ok=True)
 (DOCS / ".nojekyll").touch()
