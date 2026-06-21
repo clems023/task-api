@@ -13,9 +13,7 @@ class AuthenticatedAPITestCase(TestCase):
         self.user = User.objects.create_user(
             username="testuser", password="testpass123"
         )
-        self.other = User.objects.create_user(
-            username="other", password="testpass123"
-        )
+        self.other = User.objects.create_user(username="other", password="testpass123")
         self.client = APIClient()
         token_response = self.client.post(
             "/api/auth/token/",
@@ -24,9 +22,7 @@ class AuthenticatedAPITestCase(TestCase):
         )
         self.access_token = token_response.json()["access"]
         self.refresh_token = token_response.json()["refresh"]
-        self.client.credentials(
-            HTTP_AUTHORIZATION=f"Bearer {self.access_token}"
-        )
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
 
     def create_task(self, title="Tâche test", done=False, user=None):
         return Task.objects.create(
