@@ -33,15 +33,14 @@
     <header class="hero">
       <div class="badge">
         <span class="badge-dot"></span>
-        API en ligne · Django REST Framework
+        API en ligne · JWT · Django REST Framework
       </div>
       <h1>
         Vos tâches,<br>
         <span class="gradient-text">en une requête.</span>
       </h1>
       <p>
-        Une API REST minimaliste et prête pour la prod.
-        Créez, listez, modifiez et supprimez des tâches via des endpoints JSON propres — le tout conteneurisé avec Docker.
+        Créez, listez, modifiez et supprimez vos tâches via une API JSON sécurisée par JWT — conteneurisée avec Docker et validée en CI.
       </p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="/api/health/">Tester le health check →</a>
@@ -64,9 +63,9 @@
           <p>Créez, lisez, mettez à jour et supprimez des tâches avec une pagination intégrée (20 items/page).</p>
         </article>
         <article class="card">
-          <div class="card-icon">🔌</div>
-          <h3>Prête à brancher</h3>
-          <p>JSON pur, CORS configuré, sans auth en v1 — idéale pour un frontend ou une app mobile.</p>
+          <div class="card-icon">🔐</div>
+          <h3>Auth JWT</h3>
+          <p>Inscription, login et refresh token. Chaque utilisateur ne voit que ses propres tâches.</p>
         </article>
       </div>
     </section>
@@ -76,19 +75,34 @@
       <h2>Endpoints disponibles</h2>
       <div class="endpoints">
         <div class="endpoint">
+          <span class="method method-post">POST</span>
+          <span class="route">/api/auth/register/</span>
+          <span class="endpoint-desc">Créer un compte</span>
+        </div>
+        <div class="endpoint">
+          <span class="method method-post">POST</span>
+          <span class="route">/api/auth/token/</span>
+          <span class="endpoint-desc">Obtenir access + refresh</span>
+        </div>
+        <div class="endpoint">
+          <span class="method method-post">POST</span>
+          <span class="route">/api/auth/token/refresh/</span>
+          <span class="endpoint-desc">Rafraîchir le token</span>
+        </div>
+        <div class="endpoint">
           <span class="method method-get">GET</span>
           <span class="route">/api/health/</span>
-          <span class="endpoint-desc">Vérifier que l'API répond</span>
+          <span class="endpoint-desc">Vérifier que l'API répond (public)</span>
         </div>
         <div class="endpoint">
           <span class="method method-get">GET</span>
           <span class="route">/api/tasks/</span>
-          <span class="endpoint-desc">Lister les tâches (paginé)</span>
+          <span class="endpoint-desc">Lister ses tâches (auth requise)</span>
         </div>
         <div class="endpoint">
           <span class="method method-post">POST</span>
           <span class="route">/api/tasks/</span>
-          <span class="endpoint-desc">Créer une tâche</span>
+          <span class="endpoint-desc">Créer une tâche (auth requise)</span>
         </div>
         <div class="endpoint">
           <span class="method method-get">GET</span>
@@ -133,9 +147,14 @@
       <div class="code-block" style="margin-top: 1rem;">
         <div class="code-header">
           <div class="code-dots"><span></span><span></span><span></span></div>
-          curl — créer une tâche
+          curl — authentification + tâche
         </div>
-        <pre><span class="token-cmd">curl</span> <span class="token-flag">-X POST</span> <span class="token-url">http://localhost:8000/api/tasks/</span> \
+        <pre><span class="token-cmd">curl</span> <span class="token-flag">-X POST</span> <span class="token-url">http://localhost:8000/api/auth/token/</span> \
+  <span class="token-flag">-H</span> <span class="token-str">"Content-Type: application/json"</span> \
+  <span class="token-flag">-d</span> <span class="token-str">'{"username":"alice","password":"securepass123"}'</span>
+
+<span class="token-cmd">curl</span> <span class="token-flag">-X POST</span> <span class="token-url">http://localhost:8000/api/tasks/</span> \
+  <span class="token-flag">-H</span> <span class="token-str">"Authorization: Bearer &lt;access&gt;"</span> \
   <span class="token-flag">-H</span> <span class="token-str">"Content-Type: application/json"</span> \
   <span class="token-flag">-d</span> <span class="token-str">'{"title": "Ma première tâche"}'</span></pre>
       </div>
@@ -148,9 +167,11 @@
         <span class="stack-pill">Python 3.12</span>
         <span class="stack-pill">Django 5</span>
         <span class="stack-pill">Django REST Framework</span>
+        <span class="stack-pill">JWT</span>
         <span class="stack-pill">SQLite</span>
         <span class="stack-pill">Gunicorn</span>
         <span class="stack-pill">Docker</span>
+        <span class="stack-pill">GitHub Actions</span>
       </div>
     </section>
 
